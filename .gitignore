@@ -2,7 +2,6 @@
 .ipynb_checkpoints/
 __pacache__/
 
-trained_model*
 *.pkl
 *.w2v
 *.pyc
