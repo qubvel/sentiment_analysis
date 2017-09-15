@@ -5,3 +5,4 @@ __pacache__/
 *.pkl
 *.w2v
 *.pyc
+.DS_Store
