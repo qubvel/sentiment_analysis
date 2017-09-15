@@ -55,6 +55,7 @@ word-based
 
 
 ##### Модель №3.  
+character-based
 Файл с обучением: "training model_3(keras==2.0.8).ipynb"  
 Обученная модель: "saved_models/trained_model_3(keras==2.0.8)"  
 Файл с оценкой качества: "evaluating_char.ipynb"  
