@@ -36,11 +36,11 @@ word-based
 Файл с оценкой качества: "evaluating_word.ipynb"
 
 
-Модель №2.
-word-based
-Файл с обучением: "training model_2(keras==2.0.8).ipynb"
-Обученная модель: "saved_models/trained_model_2(keras==2.0.8)"
-Файл с оценкой качества: "evaluating_word.ipynb"
+</b>Модель №2.
+</b>word-based
+</b>Файл с обучением: "training model_2(keras==2.0.8).ipynb"
+</b>Обученная модель: "saved_models/trained_model_2(keras==2.0.8)"
+</b>Файл с оценкой качества: "evaluating_word.ipynb"
 
 
 Модель №3.
