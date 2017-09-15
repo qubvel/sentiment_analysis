@@ -12,6 +12,7 @@ class SentenceProcessor(object):
         self.morph = pymorphy2.MorphAnalyzer()
         self.tokenizer = RegexpTokenizer(tokenizer_regexp)
         self.stop_list = []
+        self.sample_len = 100
         
     def _load_w2v(self, w2v_model_path):
         w2v = gensim.models.KeyedVectors.load_word2vec_format(w2v_model_path, binary=True, unicode_errors='ignore')
@@ -24,12 +25,13 @@ class SentenceProcessor(object):
         elif type(sample) is str:
             sample = sample.split()
         else:
-            raise Exception('Sample should be string or list of words')
-        return sample
+            # raise Exception('Sample should be string or list of words')
+            sample = []
+        return sample[:140]
         
     def tokenize(self, sample):
         '''make tokenization, return bag of words'''
-        return self.tokenizer.tokenize(sample)
+        return self.tokenizer.tokenize(sample)[:140]
     
     def correction(self, sample):
         bag_of_words = self._make_bag_of_words(sample)
@@ -79,34 +81,38 @@ class SentenceProcessor(object):
         if normalize:
             sample = self.normalize(sample)
             
+            if correction:
+                sample = self.correction(sample)
+            
         if delete_stop_words:
             sample = self.delete_stop_words(sample)
         
         return sample
     
-    def cut_or_add(self, sample, sample_len):
+    def cut_or_add(self, sample):
         
-        while len(sample) < sample_len and len(sample) != 0:
-            sample.append(np.zeros_like(sample[0], dtype=np.float32))
+        while len(sample) < self.sample_len:
+            sample.append(np.zeros(self.w2v.vector_size, dtype=np.float32))
         
-        if len(sample) > sample_len:
-            sample = sample[:sample_len]
-            
+        if len(sample) > self.sample_len:
+            sample = sample[:self.sample_len]
+        
         return sample
     
-    def convert2matrix(self, sample, sample_len=None):
-
+    def convert2matrix(self, sample):
+        
         bag_of_words = self._make_bag_of_words(sample)
 
         bag_of_vectors = []
+        
         for word in bag_of_words:
             try:
                 bag_of_vectors.append(self.w2v.word_vec(word))
             except KeyError:
                 pass
 
-        if sample_len:
-            bag_of_vectors = self.cut_or_add(bag_of_vectors, sample_len)
+        if self.sample_len:
+            bag_of_vectors = self.cut_or_add(bag_of_vectors)
 
         matrix = np.array(bag_of_vectors)
         
